@@ -1,9 +1,12 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const connectToMongoDB = require('./connect');
 const urlrouter = require("./routes/url");
+const {restricToLoggedInUserOnly, checkAuth} = require("./middleware/auth");
 const URL = require("./models/url");
 const staticRoute = require("./routes/staticRouter");
+const userRoute = require("./routes/user");
 const app = express();
 const PORT = 8002;
 
@@ -14,8 +17,10 @@ app.set('view engine', 'ejs');
 app.set('views', path.resolve('./view'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use('/url', urlrouter)
-app.use("/", staticRoute);
+app.use(cookieParser());
+app.use('/url',restricToLoggedInUserOnly, urlrouter);
+app.use('/user', userRoute);
+app.use("/",checkAuth, staticRoute);
 
 
 app.get("/:shortid", async (req, res) => {
