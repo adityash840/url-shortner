@@ -5,7 +5,8 @@ const URL = require("../models/url");
 router.get("/", async(req, res) => {
     if(!req.user) return res.redirect("/login");
     const allurls = await URL.find({ createdBy: req.user._id });
-    return res.render("home", { urls: allurls });
+    const id = req.query.id;
+    return res.render("home", { urls: allurls, id });
 });
 
 router.get("/signup", (req, res) => {

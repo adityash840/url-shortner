@@ -7,6 +7,7 @@ const {restricToLoggedInUserOnly, checkAuth} = require("./middleware/auth");
 const URL = require("./models/url");
 const staticRoute = require("./routes/staticRouter");
 const userRoute = require("./routes/user");
+
 const app = express();
 const PORT = 8002;
 
